@@ -46,7 +46,11 @@ const fetchSuggestions = async (query: string): Promise<Suggestion[]> => {
     return filteredData;
   } catch (error) {
     clearTimeout(timeoutId);
-    throw error.name === "AbortError" ? new Error("Request timed out") : error;
+    if (error instanceof Error) {
+      throw error.name === "AbortError" ? new Error("Request timed out") : error;
+    } else {
+      throw new Error("An unknown error occurred");
+    }
   }
 };
 
